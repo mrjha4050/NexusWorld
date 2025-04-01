@@ -13,7 +13,6 @@ export async function GET() {
   try {
     const now = Date.now();
     
-    // Return cached data if it's still valid
     if (cache.data && (now - cache.timestamp) < CACHE_DURATION) {
       return NextResponse.json(cache.data);
     }
@@ -29,7 +28,6 @@ export async function GET() {
 
     if (!response.ok) {
       if (response.status === 429) {
-        // If rate limited, try to return cached data even if expired
         if (cache.data) {
           return NextResponse.json(cache.data);
         }
