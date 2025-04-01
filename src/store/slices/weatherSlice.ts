@@ -8,7 +8,7 @@ const initialState: WeatherState = {
   error: null,
 };
 
-const CITIES = ['New York', 'London', 'Tokyo'];
+// const CITIES = ['New York', 'London', 'Tokyo'];
 
 // City coordinates for OpenMeteo API
 const CITY_COORDINATES: Record<string, { lat: number; lon: number }> = {

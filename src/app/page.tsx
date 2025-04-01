@@ -23,15 +23,20 @@ export default function Home() {
     setMounted(true);
   }, []);
 
+  // Load previous prices from localStorage on mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedPrices = localStorage.getItem('previousPrices');
+      if (storedPrices) {
+        previousPrices.current = JSON.parse(storedPrices);
+      }
+    }
+  }, []);
+
   useEffect(() => {
     if (!mounted) return;
 
-    favoritesState.cryptocurrencies.forEach(id => {
-      if (cryptoState.data[id]?.price) {
-        previousPrices.current[id] = cryptoState.data[id].price;
-      }
-    });
-
+    // Fetch new data
     favoritesState.cities.forEach(city => {
       dispatch(fetchWeatherData(city));
     });
@@ -68,6 +73,14 @@ export default function Home() {
               position: 'top-right',
             }
           );
+        }
+      }
+      // Update previous price for next comparison
+      if (currentPrice) {
+        previousPrices.current[id] = currentPrice;
+        // Save to localStorage
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('previousPrices', JSON.stringify(previousPrices.current));
         }
       }
     });
