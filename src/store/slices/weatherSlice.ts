@@ -1,0 +1,101 @@
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
+import { WeatherData, WeatherState } from '@/types';
+
+const initialState: WeatherState = {
+  data: {},
+  loading: false,
+  error: null,
+};
+
+const CITIES = ['New York', 'London', 'Tokyo'];
+
+// City coordinates for OpenMeteo API
+const CITY_COORDINATES: Record<string, { lat: number; lon: number }> = {
+  'New York': { lat: 40.7128, lon: -74.0060 },
+  'London': { lat: 51.5074, lon: -0.1278 },
+  'Tokyo': { lat: 35.6762, lon: 139.6503 },
+};
+
+export const fetchWeatherData = createAsyncThunk(
+  'weather/fetchWeatherData',
+  async (city: string): Promise<WeatherData> => {
+    const coordinates = CITY_COORDINATES[city];
+    const response = await axios.get(
+      `https://api.open-meteo.com/v1/forecast?latitude=${coordinates.lat}&longitude=${coordinates.lon}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code`
+    );
+
+    // Convert weather code to description and icon
+    const weatherCode = response.data.current.weather_code;
+    const weatherInfo = getWeatherInfo(weatherCode);
+
+    return {
+      city,
+      temperature: response.data.current.temperature_2m,
+      description: weatherInfo.description,
+      humidity: response.data.current.relative_humidity_2m,
+      windSpeed: response.data.current.wind_speed_10m,
+      icon: weatherInfo.icon,
+    };
+  }
+);
+
+// Helper function to convert OpenMeteo weather codes to descriptions and icons
+function getWeatherInfo(code: number): { description: string; icon: string } {
+  const weatherCodes: Record<number, { description: string; icon: string }> = {
+    0: { description: 'clear sky', icon: '01d' },
+    1: { description: 'mainly clear', icon: '02d' },
+    2: { description: 'partly cloudy', icon: '03d' },
+    3: { description: 'overcast', icon: '04d' },
+    45: { description: 'foggy', icon: '50d' },
+    48: { description: 'depositing rime fog', icon: '50d' },
+    51: { description: 'light drizzle', icon: '09d' },
+    53: { description: 'moderate drizzle', icon: '09d' },
+    55: { description: 'dense drizzle', icon: '09d' },
+    61: { description: 'slight rain', icon: '10d' },
+    63: { description: 'moderate rain', icon: '10d' },
+    65: { description: 'heavy rain', icon: '10d' },
+    71: { description: 'slight snow', icon: '13d' },
+    73: { description: 'moderate snow', icon: '13d' },
+    75: { description: 'heavy snow', icon: '13d' },
+    77: { description: 'snow grains', icon: '13d' },
+    80: { description: 'slight rain showers', icon: '09d' },
+    81: { description: 'moderate rain showers', icon: '09d' },
+    82: { description: 'violent rain showers', icon: '09d' },
+    85: { description: 'slight snow showers', icon: '13d' },
+    86: { description: 'heavy snow showers', icon: '13d' },
+    95: { description: 'thunderstorm', icon: '11d' },
+    96: { description: 'thunderstorm with slight hail', icon: '11d' },
+    99: { description: 'thunderstorm with heavy hail', icon: '11d' },
+  };
+
+  return weatherCodes[code] || { description: 'unknown', icon: '01d' };
+}
+
+const weatherSlice = createSlice({
+  name: 'weather',
+  initialState,
+  reducers: {
+    clearError: (state) => {
+      state.error = null;
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchWeatherData.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchWeatherData.fulfilled, (state, action) => {
+        state.loading = false;
+        state.data[action.payload.city] = action.payload;
+      })
+      .addCase(fetchWeatherData.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || 'Failed to fetch weather data';
+      });
+  },
+});
+
+export const { clearError } = weatherSlice.actions;
+export default weatherSlice.reducer; 
