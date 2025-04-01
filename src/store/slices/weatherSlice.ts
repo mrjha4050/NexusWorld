@@ -22,6 +22,12 @@ const CITY_COORDINATES: Record<string, { lat: number; lon: number }> = {
   'Hong Kong': { lat: 22.3193, lon: 114.1694 },
   'Berlin': { lat: 52.5200, lon: 13.4050 },
   'Mumbai': { lat: 19.0760, lon: 72.8777 },
+  'Los Angeles': { lat: 34.0522, lon: -118.2437 },
+  'San Francisco': { lat: 37.7749, lon: -122.4194 },
+  'Chicago': { lat: 41.8781, lon: -87.6298 },
+  'Miami': { lat: 25.7617, lon: -80.1918 },
+  'San Diego': { lat: 32.7157, lon: -117.1611 },
+  'San Jose': { lat: 37.3382, lon: -121.8863 },
 };
 
 export const fetchWeatherData = createAsyncThunk(

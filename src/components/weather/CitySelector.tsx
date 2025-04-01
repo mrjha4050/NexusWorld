@@ -16,6 +16,12 @@ const FAMOUS_CITIES = [
   { name: 'Hong Kong', country: 'China' },
   { name: 'Berlin', country: 'Germany' },
   { name: 'Mumbai', country: 'India' },
+  { name: 'Los Angeles', country: 'USA' },
+  { name: 'San Francisco', country: 'USA' },
+  { name: 'Chicago', country: 'USA' },
+  { name: 'Miami', country: 'USA' },
+  { name: 'San Diego', country: 'USA' },
+  { name: 'San Jose', country: 'USA' },
 ];
 
 const CitySelector: React.FC = () => {

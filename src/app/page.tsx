@@ -23,7 +23,6 @@ export default function Home() {
     setMounted(true);
   }, []);
 
-  // Load previous prices from localStorage on mount
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const storedPrices = localStorage.getItem('previousPrices');

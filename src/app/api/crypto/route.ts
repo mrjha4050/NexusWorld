@@ -3,8 +3,29 @@ import { NextResponse } from 'next/server';
 const COINGECKO_API = 'https://api.coingecko.com/api/v3';
 const CACHE_DURATION = 30 * 1000; // 30 seconds in milliseconds
 
+interface CoinGeckoPriceData {
+  usd: number;
+  usd_24h_change: number;
+  usd_market_cap: number;
+  usd_24h_vol: number;
+}
+
+interface CoinGeckoResponse {
+  [key: string]: CoinGeckoPriceData;
+}
+
+interface FormattedCryptoData {
+  id: string;
+  name: string;
+  symbol: string;
+  price: number;
+  priceChange24h: number;
+  marketCap: number;
+  volume24h: number;
+}
+
 interface CacheData {
-  data: Record<string, any> | null;
+  data: Record<string, FormattedCryptoData> | null;
   timestamp: number;
   ids: string;
 }
@@ -54,10 +75,10 @@ export async function GET(request: Request) {
       throw new Error(`CoinGecko API error: ${response.statusText}`);
     }
 
-    const rawData = await response.json();
+    const rawData = await response.json() as CoinGeckoResponse;
     
     // Format the data for the frontend
-    const formattedData = Object.entries(rawData).reduce((acc, [id, data]: [string, any]) => {
+    const formattedData = Object.entries(rawData).reduce((acc, [id, data]) => {
       acc[id] = {
         id,
         name: id.charAt(0).toUpperCase() + id.slice(1),
@@ -68,7 +89,7 @@ export async function GET(request: Request) {
         volume24h: data.usd_24h_vol || 0,
       };
       return acc;
-    }, {} as Record<string, any>);
+    }, {} as Record<string, FormattedCryptoData>);
     
     // Update cache
     cache = {
