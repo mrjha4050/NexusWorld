@@ -18,7 +18,7 @@ A real-time dashboard that combines cryptocurrency prices and weather data for m
 - Node.js 18.x or later
 - npm or yarn
 - API keys for:
-  - OpenWeatherMap (https://openweathermap.org/api)
+  - OpenMeteo API
   - NewsData.io (https://newsdata.io/)
 
 ## Setup
@@ -38,7 +38,6 @@ A real-time dashboard that combines cryptocurrency prices and weather data for m
 
 3. Create a `.env.local` file in the root directory and add your API keys:
    ```
-   NEXT_PUBLIC_OPENWEATHER_API_KEY=your_openweather_api_key
    NEXT_PUBLIC_NEWSDATA_API_KEY=your_newsdata_api_key
    ```
 
@@ -82,15 +81,3 @@ src/
 - Heroicons
 - Recharts
 - date-fns
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
