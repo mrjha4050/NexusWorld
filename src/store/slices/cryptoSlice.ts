@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { CryptoState, CryptoData, NewsArticle } from '@/types';
+import { CryptoState } from '@/types';
 
 const initialState: CryptoState = {
   data: {},
