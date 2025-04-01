@@ -1,10 +1,16 @@
-import { Providers } from '@/store/provider';
-import Layout from '@/components/layout/Layout';
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
 import './globals.css';
+import { Toaster } from 'react-hot-toast';
 
-export const metadata = {
-  title: 'CryptoWeather Nexus',
-  description: 'Real-time cryptocurrency prices and weather data dashboard',
+const inter = Inter({ subsets: ['latin'] });
+
+export const metadata: Metadata = {
+  title: 'Weather & Crypto Dashboard',
+  description: 'Track weather and cryptocurrency prices in real-time',
+  icons: {
+    icon: '/favicon.svg',
+  },
 };
 
 export default function RootLayout({
@@ -14,10 +20,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
-        <Providers>
-          <Layout>{children}</Layout>
-        </Providers>
+      <body className={inter.className}>
+        {children}
+        <Toaster position="top-right" />
       </body>
     </html>
   );
