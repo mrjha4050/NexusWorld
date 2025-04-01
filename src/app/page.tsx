@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/store';
 import { fetchWeatherData } from '@/store/slices/weatherSlice';
@@ -15,6 +15,7 @@ export default function Home() {
   const weatherState = useSelector((state: RootState) => state.weather) as WeatherState;
   const cryptoState = useSelector((state: RootState) => state.crypto) as CryptoState;
   const favoritesState = useSelector((state: RootState) => state.favorites) as FavoritesState;
+  const [mounted, setMounted] = useState(false);
 
   const fetchWeatherDataForCities = useCallback(() => {
     favoritesState.cities.forEach(city => {
@@ -29,6 +30,12 @@ export default function Home() {
   }, [dispatch, favoritesState.cryptocurrencies]);
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
+
     // Fetch initial data
     fetchWeatherDataForCities();
     fetchCryptoDataForFavorites();
@@ -44,7 +51,11 @@ export default function Home() {
       clearInterval(cryptoInterval);
       clearInterval(newsInterval);
     };
-  }, [dispatch, fetchWeatherDataForCities, fetchCryptoDataForFavorites]);
+  }, [dispatch, fetchWeatherDataForCities, fetchCryptoDataForFavorites, mounted]);
+
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <div className="space-y-6">
