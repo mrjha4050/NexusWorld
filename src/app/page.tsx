@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useCallback, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/store';
 import { fetchWeatherData } from '@/store/slices/weatherSlice';
@@ -9,6 +9,7 @@ import WeatherCard from '@/components/weather/WeatherCard';
 import CryptoCard from '@/components/crypto/CryptoCard';
 import NewsCard from '@/components/crypto/NewsCard';
 import { WeatherState, CryptoState, FavoritesState } from '@/types';
+import toast from 'react-hot-toast';
 
 export default function Home() {
   const dispatch = useDispatch<AppDispatch>();
@@ -16,18 +17,7 @@ export default function Home() {
   const cryptoState = useSelector((state: RootState) => state.crypto) as CryptoState;
   const favoritesState = useSelector((state: RootState) => state.favorites) as FavoritesState;
   const [mounted, setMounted] = useState(false);
-
-  const fetchWeatherDataForCities = useCallback(() => {
-    favoritesState.cities.forEach(city => {
-      dispatch(fetchWeatherData(city));
-    });
-  }, [dispatch, favoritesState.cities]);
-
-  const fetchCryptoDataForFavorites = useCallback(() => {
-    if (favoritesState.cryptocurrencies.length > 0) {
-      dispatch(fetchCryptoData(favoritesState.cryptocurrencies));
-    }
-  }, [dispatch, favoritesState.cryptocurrencies]);
+  const previousPrices = useRef<{ [key: string]: number }>({});
 
   useEffect(() => {
     setMounted(true);
@@ -36,22 +26,52 @@ export default function Home() {
   useEffect(() => {
     if (!mounted) return;
 
-    // Fetch initial data
-    fetchWeatherDataForCities();
-    fetchCryptoDataForFavorites();
+    favoritesState.cryptocurrencies.forEach(id => {
+      if (cryptoState.data[id]?.price) {
+        previousPrices.current[id] = cryptoState.data[id].price;
+      }
+    });
+
+    favoritesState.cities.forEach(city => {
+      dispatch(fetchWeatherData(city));
+    });
+
+    if (favoritesState.cryptocurrencies.length > 0) {
+      dispatch(fetchCryptoData(favoritesState.cryptocurrencies));
+    }
+
     dispatch(fetchCryptoNews());
+  }, [dispatch, favoritesState.cities, favoritesState.cryptocurrencies, mounted]);
 
-    // Set up polling
-    const weatherInterval = setInterval(fetchWeatherDataForCities, 60000);
-    const cryptoInterval = setInterval(fetchCryptoDataForFavorites, 60000);
-    const newsInterval = setInterval(() => dispatch(fetchCryptoNews()), 60000);
+  // Check for price changes after data is fetched
+  useEffect(() => {
+    if (!mounted) return;
 
-    return () => {
-      clearInterval(weatherInterval);
-      clearInterval(cryptoInterval);
-      clearInterval(newsInterval);
-    };
-  }, [dispatch, fetchWeatherDataForCities, fetchCryptoDataForFavorites, mounted]);
+    favoritesState.cryptocurrencies.forEach(id => {
+      const currentPrice = cryptoState.data[id]?.price;
+      const previousPrice = previousPrices.current[id];
+      
+      if (currentPrice && previousPrice) {
+        const priceChange = ((currentPrice - previousPrice) / previousPrice) * 100;
+        if (Math.abs(priceChange) >= 0.1) { // Show toast for changes >= 0.1%
+          const changeColor = priceChange >= 0 ? 'text-green-500' : 'text-red-500';
+          const changeIcon = priceChange >= 0 ? '📈' : '📉';
+          toast.success(
+            <div className="flex items-center gap-2">
+              <span>{cryptoState.data[id]?.name}</span>
+              <span className={changeColor}>
+                {changeIcon} {Math.abs(priceChange).toFixed(2)}%
+              </span>
+            </div>,
+            {
+              duration: 3000,
+              position: 'top-right',
+            }
+          );
+        }
+      }
+    });
+  }, [cryptoState.data, favoritesState.cryptocurrencies, mounted]);
 
   if (!mounted) {
     return null;

@@ -1,16 +1,6 @@
 import React from 'react';
-import { ArrowUpIcon, ArrowDownIcon } from '@heroicons/react/24/solid';
-import { CurrencyDollarIcon } from '@heroicons/react/24/outline';
-
-interface CryptoData {
-  id: string;
-  name: string;
-  symbol: string;
-  price: number;
-  priceChange24h: number;
-  marketCap: number;
-  volume24h: number;
-}
+import { CurrencyDollarIcon, ArrowUpIcon, ArrowDownIcon } from '@heroicons/react/24/outline';
+import { CryptoData } from '@/types';
 
 interface CryptoCardProps {
   data?: CryptoData;
@@ -28,7 +18,7 @@ const CryptoCard: React.FC<CryptoCardProps> = ({ data, loading }) => {
     );
   }
 
-  if (!data) {
+  if (!data || !data.price) {
     return (
       <div className="bg-white rounded-lg shadow p-6">
         <h3 className="text-lg font-semibold text-gray-900">No data available</h3>
