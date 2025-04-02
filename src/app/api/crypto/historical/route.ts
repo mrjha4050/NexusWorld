@@ -1,9 +1,16 @@
 import { NextResponse } from 'next/server';
 
+// Define the expected response structure from CoinGecko
+interface MarketChartData {
+  prices: [number, number][]; // [timestamp, price] pairs
+  market_caps: [number, number][];
+  total_volumes: [number, number][];
+}
+
 const COINGECKO_API = 'https://api.coingecko.com/api/v3';
 
 // Cache for storing API responses
-const cache = new Map<string, { data: any; timestamp: number }>();
+const cache = new Map<string, { data: MarketChartData; timestamp: number }>();
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes in milliseconds
 
 export async function GET(request: Request) {
@@ -59,14 +66,14 @@ export async function GET(request: Request) {
           );
         }
 
-        const data = await retryResponse.json();
+        const data: MarketChartData = await retryResponse.json();
         cache.set(cacheKey, { data, timestamp: Date.now() });
         return NextResponse.json(data);
       }
       throw new Error(`CoinGecko API error: ${response.statusText}`);
     }
 
-    const data = await response.json();
+    const data: MarketChartData = await response.json();
     
     // Validate the response data
     if (!data.prices || !Array.isArray(data.prices)) {
@@ -100,4 +107,4 @@ export async function GET(request: Request) {
       { status: 500 }
     );
   }
-} 
+}

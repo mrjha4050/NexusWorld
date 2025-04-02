@@ -4,10 +4,16 @@ import { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/store';
 import { fetchCryptoData } from '@/store/slices/cryptoSlice';
-import { CryptoData } from '@/types';
+// Make sure this import path is correct and the type is exported
+import { CryptoData } from '@/types'; // Verify this path
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { format } from 'date-fns';
 import { use } from 'react';
+
+interface HistoricalDataPoint {
+  date: string;
+  price: number;
+}
 
 interface PageProps {
   params: Promise<{
@@ -17,7 +23,7 @@ interface PageProps {
 
 function CryptoDetailsContent({ id }: { id: string }) {
   const dispatch = useDispatch<AppDispatch>();
-  const [historicalData, setHistoricalData] = useState<any[]>([]);
+  const [historicalData, setHistoricalData] = useState<HistoricalDataPoint[]>([]);
   const [timeRange, setTimeRange] = useState<'24h' | '7d' | '30d'>('24h');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -25,7 +31,7 @@ function CryptoDetailsContent({ id }: { id: string }) {
   const MAX_RETRIES = 3;
 
   const cryptoState = useSelector((state: RootState) => state.crypto);
-  const cryptoData = cryptoState.data[id];
+  const cryptoData = cryptoState.data[id] as CryptoData | undefined;
 
   const fetchHistoricalData = useCallback(async () => {
     try {
@@ -40,15 +46,13 @@ function CryptoDetailsContent({ id }: { id: string }) {
       if (!data.prices || !Array.isArray(data.prices)) {
         throw new Error('Invalid data format received');
       }
-
-      // Process and transform the data
+  
       const transformedData = data.prices
         .map(([timestamp, price]: [number, number]) => ({
           date: format(new Date(timestamp), 'MMM d, HH:mm'),
           price,
         }))
-        // Reduce data points for better performance
-        .filter((_, index) => index % 2 === 0);
+        .filter((item: HistoricalDataPoint, index: number) => index % 2 === 0);
       
       setHistoricalData(transformedData);
       setError(null);
@@ -66,10 +70,7 @@ function CryptoDetailsContent({ id }: { id: string }) {
       setLoading(true);
       setError(null);
       try {
-        // Fetch current data
         await dispatch(fetchCryptoData([id]));
-
-        // Fetch historical data with retry logic
         await fetchHistoricalData();
         setRetryCount(0);
       } catch (error) {
@@ -79,7 +80,6 @@ function CryptoDetailsContent({ id }: { id: string }) {
         
         if (error instanceof Error) {
           if (error.message.includes('Rate limit') && retryCount < MAX_RETRIES) {
-            // Wait for 2 seconds before retrying
             await new Promise(resolve => setTimeout(resolve, 2000));
             setRetryCount(prev => prev + 1);
             return;
@@ -231,4 +231,4 @@ function CryptoDetailsContent({ id }: { id: string }) {
 export default function CryptoDetailsPage({ params }: PageProps) {
   const resolvedParams = use(params);
   return <CryptoDetailsContent id={resolvedParams.id} />;
-} 
+}

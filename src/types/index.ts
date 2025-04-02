@@ -1,22 +1,31 @@
+// export interface WeatherData {
+//   id: string;
+//   name: string;
+//   sys: {
+//     country: string;
+//   };
+//   main: {
+//     temp: number;
+//     feels_like: number;
+//     humidity: number;
+//     pressure: number;
+//   };
+//   weather: Array<{
+//     main: string;
+//     description: string;
+//   }>;
+//   wind: {
+//     speed: number;
+//   };
+// }
+
 export interface WeatherData {
-  id: string;
-  name: string;
-  sys: {
-    country: string;
-  };
-  main: {
-    temp: number;
-    feels_like: number;
-    humidity: number;
-    pressure: number;
-  };
-  weather: Array<{
-    main: string;
-    description: string;
-  }>;
-  wind: {
-    speed: number;
-  };
+  city: string;
+  temperature: number;
+  description: string;
+  humidity: number;
+  windSpeed: number;
+  icon: string;
 }
 
 export interface WeatherState {

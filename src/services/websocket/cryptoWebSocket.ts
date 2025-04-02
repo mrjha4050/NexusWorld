@@ -1,5 +1,5 @@
 import { store } from '@/store';
-import { updateCryptoPrice } from '@/store/slices/cryptoSlice';
+import { updateCryptoPrice } from "@/store/slices/cryptoSlice"; // Named import
 
 class CryptoWebSocket {
   private socket: WebSocket | null = null;
@@ -22,8 +22,8 @@ class CryptoWebSocket {
 
       this.socket.onmessage = (event) => {
         try {
-          const data = JSON.parse(event.data);
-          Object.entries(data).forEach(([id, price]: [string, any]) => {
+          const data: Record<string, string> = JSON.parse(event.data);
+          Object.entries(data).forEach(([id, price]: [string, string]) => {
             store.dispatch(updateCryptoPrice({ id, price: parseFloat(price) }));
           });
         } catch (error) {
@@ -64,4 +64,4 @@ class CryptoWebSocket {
   }
 }
 
-export const cryptoWebSocket = new CryptoWebSocket(); 
+export const cryptoWebSocket = new CryptoWebSocket();

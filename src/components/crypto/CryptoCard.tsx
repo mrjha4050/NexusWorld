@@ -1,5 +1,5 @@
 import React from 'react';
-import { CurrencyDollarIcon, ArrowUpIcon, ArrowDownIcon } from '@heroicons/react/24/outline';
+import { ArrowUpIcon, ArrowDownIcon } from '@heroicons/react/24/outline'; // Removed CurrencyDollarIcon
 import { CryptoData } from '@/types';
 import Link from 'next/link';
 
@@ -27,6 +27,7 @@ export default function CryptoCard({ data, loading }: CryptoCardProps) {
     );
   }
 
+  // Using the variables instead of duplicating the logic
   const priceChangeColor = data.priceChange24h >= 0 ? 'text-green-500' : 'text-red-500';
   const PriceChangeIcon = data.priceChange24h >= 0 ? ArrowUpIcon : ArrowDownIcon;
 
@@ -38,13 +39,12 @@ export default function CryptoCard({ data, loading }: CryptoCardProps) {
             <h3 className="text-lg font-semibold text-gray-900">{data.name}</h3>
             <p className="text-sm text-gray-500">{data.symbol.toUpperCase()}</p>
           </div>
-          <span className={`px-2 py-1 rounded text-sm ${
-            data.priceChange24h >= 0
-              ? 'bg-green-100 text-green-800'
-              : 'bg-red-100 text-red-800'
-          }`}>
-            {data.priceChange24h >= 0 ? '📈' : '📉'} {Math.abs(data.priceChange24h).toFixed(2)}%
-          </span>
+          <div className="flex items-center">
+            <PriceChangeIcon className={`h-5 w-5 ${priceChangeColor} mr-1`} />
+            <span className={`px-2 py-1 rounded text-sm ${priceChangeColor}`}>
+              {Math.abs(data.priceChange24h).toFixed(2)}%
+            </span>
+          </div>
         </div>
         <div className="space-y-2">
           <p className="text-2xl font-bold text-gray-900">
@@ -64,4 +64,4 @@ export default function CryptoCard({ data, loading }: CryptoCardProps) {
       </div>
     </Link>
   );
-} 
+}

@@ -50,4 +50,4 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ city, data, loading }) => {
   );
 };
 
-export default WeatherCard; 
+export default WeatherCard;

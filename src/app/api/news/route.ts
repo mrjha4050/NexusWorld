@@ -1,10 +1,30 @@
 import { NextResponse } from 'next/server';
 import { format } from 'date-fns';
 
+// Define interfaces for the news data structure
+interface NewsArticle {
+  title: string;
+  link: string;
+  pubDate: string | null;
+  description: string | null;
+  source_id: string;
+  // Add other fields as needed based on NewsData.io response
+}
+
+interface NewsResponse {
+  status: string;
+  totalResults: number;
+  results: NewsArticle[];
+  nextPage?: string;
+}
+
 const NEWSDATA_API = 'https://newsdata.io/api/1/news';
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes in milliseconds
 
-let cache = {
+let cache: {
+  data: NewsResponse | null;
+  timestamp: number;
+} = {
   data: null,
   timestamp: 0,
 };
@@ -39,14 +59,16 @@ export async function GET() {
       throw new Error(`NewsData API error: ${response.statusText}`);
     }
 
-    const data = await response.json();
+    const data: NewsResponse = await response.json();
     
     // Format the news data
-    const formattedData = {
+    const formattedData: NewsResponse = {
       ...data,
-      results: data.results.map((article: any) => ({
+      results: data.results.map((article: NewsArticle) => ({
         ...article,
-        publishedAt: article.pubDate ? format(new Date(article.pubDate), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx") : new Date().toISOString(),
+        publishedAt: article.pubDate 
+          ? format(new Date(article.pubDate), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx") 
+          : new Date().toISOString(),
       })),
     };
     
@@ -68,4 +90,4 @@ export async function GET() {
       { status: 500 }
     );
   }
-} 
+}
