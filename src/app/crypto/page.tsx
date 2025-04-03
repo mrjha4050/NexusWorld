@@ -31,7 +31,6 @@ export default function CryptoPage() {
     <div className="space-y-6">
       <h1 className="text-3xl font-bold text-gray-900">Cryptocurrency Dashboard</h1>
       
-      {/* Crypto Section */}
       <section>
         <h2 className="text-xl font-semibold text-gray-800 mb-4">Cryptocurrencies</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -45,7 +44,6 @@ export default function CryptoPage() {
         </div>
       </section>
 
-      {/* News Section */}
       <section>
         <h2 className="text-xl font-semibold text-gray-800 mb-4">Latest Crypto News</h2>
         <div className="space-y-4">

@@ -14,12 +14,10 @@ export default function WeatherPage() {
   const [selectedCity, setSelectedCity] = useState<string>('New York');
 
   useEffect(() => {
-    // Fetch initial data
     dispatch(fetchWeatherData('New York'));
     dispatch(fetchWeatherData('London'));
     dispatch(fetchWeatherData('Tokyo'));
 
-    // Set up polling for weather data
     const weatherInterval = setInterval(() => {
       dispatch(fetchWeatherData('New York'));
       dispatch(fetchWeatherData('London'));
@@ -35,7 +33,6 @@ export default function WeatherPage() {
     <div className="space-y-6">
       <h1 className="text-3xl font-bold text-gray-900">Weather Dashboard</h1>
       
-      {/* City Selection */}
       <div className="flex space-x-4">
         {['New York', 'London', 'Tokyo'].map((city) => (
           <button
@@ -52,7 +49,6 @@ export default function WeatherPage() {
         ))}
       </div>
 
-      {/* Current Weather Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {['New York', 'London', 'Tokyo'].map((city) => (
           <WeatherCard
@@ -64,7 +60,6 @@ export default function WeatherPage() {
         ))}
       </div>
 
-      {/* Detailed Weather View */}
       {weatherState.data[selectedCity] && (
         <WeatherDetails data={weatherState.data[selectedCity]} />
       )}

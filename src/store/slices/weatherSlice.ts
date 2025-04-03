@@ -8,9 +8,7 @@ const initialState: WeatherState = {
   error: null,
 };
 
-// const CITIES = ['New York', 'London', 'Tokyo'];
 
-// City coordinates for OpenMeteo API
 const CITY_COORDINATES: Record<string, { lat: number; lon: number }> = {
   'New York': { lat: 40.7128, lon: -74.0060 },
   'London': { lat: 51.5074, lon: -0.1278 },
@@ -42,7 +40,6 @@ export const fetchWeatherData = createAsyncThunk(
       `https://api.open-meteo.com/v1/forecast?latitude=${coordinates.lat}&longitude=${coordinates.lon}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code`
     );
 
-    // Convert weather code to description and icon
     const weatherCode = response.data.current.weather_code;
     const weatherInfo = getWeatherInfo(weatherCode);
 
@@ -57,7 +54,6 @@ export const fetchWeatherData = createAsyncThunk(
   }
 );
 
-// Helper function to convert OpenMeteo weather codes to descriptions and icons
 function getWeatherInfo(code: number): { description: string; icon: string } {
   const weatherCodes: Record<number, { description: string; icon: string }> = {
     0: { description: 'clear sky', icon: '01d' },
