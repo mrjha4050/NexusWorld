@@ -30,7 +30,7 @@ const WeatherDetails: React.FC<WeatherDetailsProps> = ({ data }) => {
     return (
       <div className="bg-white rounded-lg shadow p-6">
         <h3 className="text-lg font-semibold text-gray-900 mb-4">Weather History</h3>
-        <p className="text-gray-500">No historical data available</p>
+        <p className="text-gray-700">No historical data available</p>
       </div>
     );
   }
