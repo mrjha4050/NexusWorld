@@ -36,8 +36,8 @@ export default function CryptoCard({ data, loading }: CryptoCardProps) {
       <div className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow duration-200">
         <div className="flex justify-between items-start mb-4">
           <div>
-            <h3 className="text-lg font-semibold text-gray-900">{data.name}</h3>
-            <p className="text-sm text-gray-500">{data.symbol.toUpperCase()}</p>
+            <div className="text-lg font-semibold text-gray-900">{data.name}</div>
+            <div className="text-sm text-gray-500">{data.symbol.toUpperCase()}</div>
           </div>
           <div className="flex items-center">
             <PriceChangeIcon className={`h-5 w-5 ${priceChangeColor} mr-1`} />
@@ -47,17 +47,17 @@ export default function CryptoCard({ data, loading }: CryptoCardProps) {
           </div>
         </div>
         <div className="space-y-2">
-          <p className="text-2xl font-bold text-gray-900">
+          <div className="text-2xl font-bold text-gray-900">
             ${data.price.toLocaleString()}
-          </p>
+          </div>
           <div className="grid grid-cols-2 gap-4 text-sm">
             <div>
-              <p className="text-gray-500">Market Cap</p>
-              <p className="font-medium">${(data.marketCap / 1e9).toFixed(2)}B</p>
+              <div style={{color: '#999'}}>Market Cap</div>
+              <div className="font-medium">${(data.marketCap / 1e9).toFixed(2)}B</div>
             </div>
             <div>
-              <p className="text-gray-500">24h Volume</p>
-              <p className="font-medium">${(data.volume24h / 1e9).toFixed(2)}B</p>
+              <div style={{color: '#999'}}>24h Volume</div>
+              <div className="font-medium">${(data.volume24h / 1e9).toFixed(2)}B</div>
             </div>
           </div>
         </div>

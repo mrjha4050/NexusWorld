@@ -44,15 +44,15 @@ const WeatherDetails: React.FC<WeatherDetailsProps> = ({ data }) => {
 
   return (
     <div className="bg-white rounded-lg shadow p-6">
-      <h3 className="text-lg font-semibold text-gray-900 mb-4">Weather History</h3>
+      <div className="text-lg font-semibold text-gray-900 mb-4">Weather History</div>
       
       <div className="h-[300px] mb-6">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="time" />
-            <YAxis yAxisId="left" />
-            <YAxis yAxisId="right" orientation="right" />
+            <XAxis dataKey="time" style={{fontSize: '9px'}} />
+            <YAxis yAxisId="left" style={{fontSize: '9px'}} />
+            <YAxis yAxisId="right" orientation="right" style={{fontSize: '9px'}} />
             <Tooltip />
             <Legend />
             <Line
@@ -85,21 +85,21 @@ const WeatherDetails: React.FC<WeatherDetailsProps> = ({ data }) => {
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <td className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Time
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              </td>
+              <td className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Temperature
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              </td>
+              <td className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Humidity
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              </td>
+              <td className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Wind Speed
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              </td>
+              <td className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Conditions
-              </th>
+              </td>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">

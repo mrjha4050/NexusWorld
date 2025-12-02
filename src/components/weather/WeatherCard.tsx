@@ -31,14 +31,14 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ city, data, loading }) => {
   return (
     <div className="bg-white rounded-lg shadow p-6">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-gray-900">{city}</h3>
+        <div className="text-lg font-semibold text-gray-900">{city}</div>
         <CloudIcon className="h-6 w-6 text-gray-500" />
       </div>
       <div className="text-3xl font-bold text-gray-900 mb-2">
         {Math.round(data.temperature)}°C
       </div>
       <p className="text-gray-600 capitalize mb-4">{data.description}</p>
-      <div className="grid grid-cols-2 gap-4 text-sm text-gray-500">
+      <div className="grid grid-cols-2 gap-4 text-sm" style={{color: '#888'}}>
         <div>
           <span className="font-medium">Humidity:</span> {data.humidity}%
         </div>

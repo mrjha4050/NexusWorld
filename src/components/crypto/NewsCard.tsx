@@ -24,9 +24,9 @@ const NewsCard: React.FC<NewsCardProps> = ({ article }) => {
         rel="noopener noreferrer"
         className="block hover:opacity-75 transition-opacity"
       >
-        <h3 className="text-lg font-semibold text-gray-900 mb-2">{article.title}</h3>
-        <p className="text-gray-600 mb-4 line-clamp-2">{article.description}</p>
-        <div className="text-sm text-gray-500">
+        <div className="text-lg font-semibold mb-2" style={{color: '#0000EE', textDecoration: 'underline'}}>{article.title}</div>
+        <div className="text-gray-600 mb-4 line-clamp-2">{article.description}</div>
+        <div className="text-sm" style={{color: '#ccc'}}>
           {formatDate(article.publishedAt)}
         </div>
       </a>

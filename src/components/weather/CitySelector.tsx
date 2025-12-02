@@ -39,7 +39,7 @@ const CitySelector: React.FC = () => {
 
   return (
     <div className="bg-white rounded-lg shadow p-6">
-      <h3 className="text-lg font-semibold text-gray-900 mb-4">Popular Cities</h3>
+      <div className="text-lg font-semibold text-gray-900 mb-4">Popular Cities</div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
         {FAMOUS_CITIES.map((city) => {
           const isFavorite = favoritesState.cities.includes(city.name);
@@ -51,7 +51,7 @@ const CitySelector: React.FC = () => {
             >
               <div className="text-left">
                 <div className="font-medium text-gray-900">{city.name}</div>
-                <div className="text-sm text-gray-500">{city.country}</div>
+                <div className="text-sm" style={{color: '#aaa'}}>{city.country}</div>
               </div>
               {isFavorite ? (
                 <StarIconSolid className="h-5 w-5 text-yellow-400" />

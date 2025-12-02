@@ -97,11 +97,11 @@ export default function Home() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
+      <div className="text-3xl font-bold text-gray-900">Dashboard</div>
       
       {/* Weather Section */}
-      <section>
-        <h2 className="text-xl font-semibold text-gray-800 mb-4">Weather</h2>
+      <div>
+        <div className="text-xl font-semibold text-gray-800 mb-4">Weather</div>
         {favoritesState.cities.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {favoritesState.cities.map((city) => (
@@ -116,17 +116,17 @@ export default function Home() {
         ) : (
           <p className="text-gray-500">
             No favorite cities added yet. Visit the{' '}
-            <a href="/favorites" className="text-indigo-600 hover:text-indigo-800">
+            <a href="/favorites" style={{color: '#4F46E5', textDecoration: 'underline'}}>
               Favorites page
             </a>{' '}
             to add cities to your dashboard.
           </p>
         )}
-      </section>
+      </div>
 
       {/* Crypto Section */}
-      <section>
-        <h2 className="text-xl font-semibold text-gray-800 mb-4">Cryptocurrencies</h2>
+      <div>
+        <div className="text-xl font-semibold text-gray-800 mb-4">Cryptocurrencies</div>
         {favoritesState.cryptocurrencies.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {favoritesState.cryptocurrencies.map((id) => (
@@ -140,23 +140,23 @@ export default function Home() {
         ) : (
           <p className="text-gray-500">
             No favorite cryptocurrencies added yet. Visit the{' '}
-            <a href="/favorites" className="text-indigo-600 hover:text-indigo-800">
+            <a href="/favorites" style={{color: '#4F46E5', textDecoration: 'underline'}}>
               Favorites page
             </a>{' '}
             to add cryptocurrencies to your dashboard.
           </p>
         )}
-      </section>
+      </div>
 
       {/* News Section */}
-      <section>
-        <h2 className="text-xl font-semibold text-gray-800 mb-4">Latest Crypto News</h2>
+      <div>
+        <div className="text-xl font-semibold text-gray-800 mb-4">Latest Crypto News</div>
         <div className="space-y-4">
           {cryptoState.news.map((article, index) => (
             <NewsCard key={index} article={article} />
           ))}
         </div>
-      </section>
+      </div>
     </div>
   );
 }
