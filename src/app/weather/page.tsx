@@ -32,6 +32,7 @@ export default function WeatherPage() {
   return (
     <div className="space-y-6">
       <h1 className="text-3xl font-bold text-gray-900">Weather Dashboard</h1>
+<main role="main">
       
       <div className="flex space-x-4">
         {['New York', 'London', 'Tokyo'].map((city) => (
