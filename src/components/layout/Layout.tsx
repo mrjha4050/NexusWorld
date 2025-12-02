@@ -16,7 +16,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-100" role="main">
+      <div className="bg-gradient-to-r from-indigo-700 to-purple-700 shadow-lg" role="navigation">
       <div className="bg-gradient-to-r from-indigo-700 to-purple-700 shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
