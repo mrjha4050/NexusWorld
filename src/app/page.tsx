@@ -150,7 +150,7 @@ export default function Home() {
 
       {/* News Section */}
       <div>
-        <div className="text-xl font-semibold text-gray-200 mb-4">Latest Crypto News</div>
+        <div className="text-xl font-semibold text-gray-800 mb-4">Latest Crypto News</div>
         <div className="space-y-4">
           {cryptoState.news.map((article, index) => (
             <NewsCard key={index} article={article} />
