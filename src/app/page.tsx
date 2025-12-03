@@ -97,7 +97,7 @@ export default function Home() {
 
   return (
     <div className="space-y-6">
-      <div className="text-3xl font-bold text-gray-200">Dashboard</div>
+      <div className="text-3xl font-bold text-gray-800">Dashboard</div>
       
       {/* Weather Section */}
       <div>
