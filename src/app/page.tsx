@@ -126,7 +126,7 @@ export default function Home() {
 
       {/* Crypto Section */}
       <div>
-        <div className="text-xl font-semibold text-gray-200 mb-4">Cryptocurrencies</div>
+        <div className="text-xl font-semibold text-gray-800 mb-4">Cryptocurrencies</div>
         {favoritesState.cryptocurrencies.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {favoritesState.cryptocurrencies.map((id) => (
